@@ -230,6 +230,8 @@ RUN \
       isal && \
   uv pip install \
     homeassistant==${HASS_RELEASE} && \
+  uv pip install --reinstall --no-deps \
+    "python-kasa @ git+https://github.com/treyturner/python-kasa.git@06c20baead4d46f238e64644c6e053b5a86dd18d" && \
   for cleanfiles in *.pyc *.pyo; do \
     find /usr/local/lib/python3.*  -iname "${cleanfiles}" -exec rm -f '{}' + ; \
   done && \
