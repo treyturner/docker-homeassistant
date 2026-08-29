@@ -1,12 +1,37 @@
 name: Permission check
+
 on:
-  pull_request_target:
+  pull_request:
     paths:
       - '**/run'
       - '**/finish'
       - '**/check'
       - 'root/migrations/*'
 
+permissions:
+  contents: read
+
 jobs:
-  permission_check:
-    uses: linuxserver/github-workflows/.github/workflows/init-svc-executable-permissions.yml@v1
+  permission-check:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+
+      - name: Check executable permissions
+        shell: bash
+        run: |
+          wrong_permissions="$(find root -type f \
+            \( -name run -o -name finish -o -name check -o -path 'root/migrations/*' \) \
+            ! -perm -111 -print)"
+
+          if [[ -n "${wrong_permissions}" ]]; then
+            while IFS= read -r file; do
+              echo "::error file=${file},line=1,title=Missing executable bit::This file must be executable by user, group, and others."
+            done <<< "${wrong_permissions}"
+            exit 1
+          fi
+
+          echo "All service and migration scripts have executable permissions."
