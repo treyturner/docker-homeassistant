@@ -172,8 +172,8 @@ RUN \
     tar xf \
       /tmp/python.tar.xz -C \
       /tmp/python --strip-components=1 && \
-    for patch in /tmp/ha-docker-base/python/${HA_PY_MAJOR}/*.patch; do \
-      patch -d /tmp/python -p 1 < "${patch}"; \
+    for patch in /tmp/ha-docker-base/python/${HA_PY_MAJOR}/patches/*.patch; do \
+      patch -d /tmp/python -p 1 < "${patch}" || exit 1; \
     done && \
     cd /tmp/python && \
     ./configure \
