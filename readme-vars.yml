@@ -114,6 +114,7 @@ init_diagram: |
   "homeassistant:latest" <- Base Images
 # changelog
 changelogs:
+  - {date: "24.10.26:", desc: "Fix upstream Python patch path for source builds and stop on patch failures."}
   - {date: "02.07.26:", desc: "Rebase to alpine 3.24."}
   - {date: "05.03.26:", desc: "Remove pycups as there are no python 3.14 wheels for it."}
   - {date: "02.10.25:", desc: "Rebase to alpine 3.22, rely on baseimage service for usb device permission fixing."}
